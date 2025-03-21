@@ -1,0 +1,11 @@
+<!-- Inventory view -->
+ <!-- Check for a a title. if no title, redirect -->
+<% if (title) { %>
+    <h1><%= title%></h1>
+    <% } else {
+        res.redirect('/')
+    } %>
+
+<%# messages() %>
+
+<%- grid %>
