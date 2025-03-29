@@ -12,6 +12,7 @@ const app = express()
 const static = require("./routes/static")
 const baseController = require("./controllers/baseController")
 const inventoryRoute = require("./routes/inventoryRoute")
+const errorRoute = require("./routes/error")
 const utilities = require("./utilities/")
 
 /* ***********************
@@ -29,6 +30,8 @@ app.use(static)
 app.get("/", utilities.handleErrors(baseController.buildHome))
 // Inventory Routes
 app.use("/inv", inventoryRoute)
+// Error Route
+app.use("/error", errorRoute);
 
 /* ***********************
  *  File not found route

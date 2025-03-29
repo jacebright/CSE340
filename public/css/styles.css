@@ -1,8 +1,31 @@
+@import url('https://fonts.googleapis.com/css2?family=Boldonse&family=Oswald:wght@200..700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+:root {
+  --paragraph-font: 'Roboto';
+  --emphasis-font: "Boldonse";
+  --head-font: 'Oswald';
+
+  /* colors */
+  --accent-color: #87ceeb;
+  --background-color: #ffffff;
+}
+
 /******* Change Box Model ***************/
 *,
 *:before,
 *:after {
   box-sizing: border-box;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--head-font);
+}
+
+ul, li {
+  font-family: var(--paragraph-font);
+}
+
+p {
+  font-family: var(--emphasis-font);
 }
 
 body {
@@ -30,7 +53,7 @@ body {
 
 nav {
   background-color: black;
-  color: white;
+  color: var(--background-color);
   margin: none;
 }
 
@@ -41,9 +64,19 @@ nav ul{
   text-decoration: none;
 }
 
+nav ul li a {
+  text-decoration: none;
+  background-color: var(--background-color);
+  color: black;
+  padding: .25rem;
+  border-radius: 25px;
+  border: 2px solid var(--background-color);
+}
+
 nav ul li {
   display: block;
   flex: 1 1 100%;
+  margin: .5rem;
 }
 
 .hero img {
@@ -70,7 +103,7 @@ nav ul li {
 
 #wrapper {
   padding: 2rem;
-  background-color: white;
+  background-color: var(--background-color);
 }
 
 
@@ -92,7 +125,7 @@ figure {
 
 figcaption {
   width: 100%;
-  background-color: white;
+  background-color: var(--background-color);
   text-align: center;
 }
 
@@ -106,7 +139,87 @@ figcaption {
   grid-column: 1 / -1;
 }
 
+/* Inventory Page */
+#inv-display {
+  display: grid;
+  align-content: center;
+}
+
+.inv-vehicle {
+  border: 2px solid var(--accent-color);
+  margin: 1rem auto;
+  width: 100%;
+  border-radius: 25px;
+  padding: 2rem;
+  list-style: none;
+  justify-items: center;
+}
+
+.inv-vehicle img {
+  width: 100%;
+}
+
+.button-link {
+  text-decoration: none;
+  background-color: var(--accent-color);
+  border: 2px solid var(--accent-color);
+  color: black;
+  padding: 1rem;
+  border-radius: 25px;
+}
+
+/* Details Page */
+.detailPage {
+  display: grid;
+  grid-template-columns: auto;
+  max-width: 80%;
+  justify-content: center;
+  margin: auto;
+}
+
+.showroom {
+  grid-row: 1 / 2;
+  max-width: 80%;
+}
+
+.showroom img {
+  border-radius: 25px;
+  width: 100%;
+  /* height: auto; */
+}
+
+.carDetails {
+  grid-column: 1 / -1;
+  margin: auto;
+  border: 2px solid var(--accent-color);
+  border-radius: 25px;
+}
+
+.carDetails, .showroom {
+  padding: 1rem;
+}
+
+.carDetails p {
+  max-width: 60%;
+  margin: auto;
+  text-align: center;
+}
+
+.carDetails ul {
+  list-style: none;
+  border: 1px dashed var(--accent-color);
+  margin: .5rem auto;
+  text-align: center;
+  padding: 1rem;
+  max-width: fit-content;
+}
+
 @media screen and (min-width: 600px) {
+  nav ul li a:hover {
+    background-color: black;
+    color: var(--background-color);
+
+  }
   body {
     background-image: url("../images/site/small_check.jpg");
     background-color: #cccccc;
@@ -116,7 +229,7 @@ figcaption {
 
   #wrapper {
     margin: 10px 40px;
-    border: 3px solid skyblue;
+    border: 3px solid var(--accent-color);
     border-radius: 25px;
     max-width: 85%;
     justify-self: center;
@@ -147,4 +260,20 @@ figcaption {
   .upgrades {
     grid-column: 2 / -1;
   }
+
+  /* inventory Page */
+#inv-display {
+  grid-template-columns: 1fr 1fr;
+}
+
+/* Details Page */
+.detailPage {
+  display: grid;
+  grid-template-columns: auto auto;
+  max-width: 80%;
+}
+
+.carDetails {
+  grid-column: 2 / 3;
+}
 }

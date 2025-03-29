@@ -32,7 +32,7 @@ Util.buildClassificationGrid = async function(data){
     if(data.length > 0){
         grid = '<ul id="inv-display">'
         data.forEach(vehicle => {
-            grid += '<li>'
+            grid += '<li class="inv-vehicle">'
             grid += '<a href="../../inv/detail/'+vehicle.inv_id
             + '"title="View ' + vehicle.inv_make + ' '+ vehicle.inv_model
             + 'details"><img src="' + vehicle.inv_thumbnail
@@ -42,7 +42,7 @@ Util.buildClassificationGrid = async function(data){
             grid += '<hr />'
             grid += '<h2>'
             grid += '<a href="../../inv/detail/' + vehicle.inv_id +'" title="View '
-            + vehicle.inv_make + ' ' + vehicle.inv_model + ' details">'
+            + vehicle.inv_make + ' ' + vehicle.inv_model + ' details" class="button-link">'
             + vehicle.inv_make + ' ' + vehicle.inv_model + '</a>'
             grid += '</h2>'
             grid += '<span>$'
@@ -55,6 +55,29 @@ Util.buildClassificationGrid = async function(data){
         grid += '<p class="notice">Sorry, no matching vehicles could be found.</p>'
     }
     return grid
+}
+
+/* *************************
+ *  Build the detail view HTML
+ * ************************ */
+Util.buildDetails = async function(data){
+  let details
+  if(data.length > 0){
+    details = '<section class="detailPage"><div class="showroom"><img src="'
+    +data[0].inv_image+'" alt="'+data[0].inv_year 
+    + ' ' + data[0].inv_make + ' ' + data[0].inv_model+'"></div>'
+    details+= '<div class="carDetails">'
+    details+= '<p class="description">'+data[0].inv_description+'</p>'
+    details+= '<ul><li><strong>Price:</strong>  $'
+    +new Intl.NumberFormat('en-US').format(data[0].inv_price)
+    +'</li><li><strong>Mileage:</strong>  '
+    +new Intl.NumberFormat('en-US').format(data[0].inv_miles)
+    +'</li><li><strong>Color:</strong>  '
+    +data[0].inv_color+'</li></ul></div></div>'
+  } else {
+      details += '<p class="notice">Sorry, no matching vehicles could be found.</p>'
+  }
+  return details
 }
 
 /* *****************************
