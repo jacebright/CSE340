@@ -10,6 +10,6 @@ router.get("/type/:classificationId", invController.buildByClassificationId);
 // Route to build vehicle by inv_id view
 router.get("/detail/:invId", invController.buildByVehicleId);
 
-router.get("/:status", errorController.buildError);
+router.get("/error/:status", errorController.buildError);
 
 module.exports = router;

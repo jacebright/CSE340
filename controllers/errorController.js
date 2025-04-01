@@ -1,6 +1,6 @@
 const utilities = require("../utilities/")
 
-const errorController = {};
+const errorController = {}
 
 throwError = function(err) {
     return new Error(`Status: ${err} - AKA: You've got a bad alternator`)
