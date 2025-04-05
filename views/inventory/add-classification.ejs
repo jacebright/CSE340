@@ -1,0 +1,17 @@
+ <!-- Check for a a title. if no title, redirect -->
+ <% if (title) { %>
+    <h1><%= title%></h1>
+    <% } else {
+        res.redirect('/')
+    } %>
+
+<%- messages() %>
+
+<form id="registerForm" action="/inv/new/class" method="post">
+    <fieldset id="add-class">
+        <label for="classification">Classification Name:</label>
+        <input type="classification" name="classification_name" id="classification" required pattern="^[a-zA-Z]+$">
+        <span><p>alphabetical characters only</p></span>
+        <button type="submit">Add</button>
+    </fieldset>
+</form>

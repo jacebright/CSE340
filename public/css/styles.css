@@ -86,11 +86,15 @@ nav ul li {
 
 .call {
   background-color: rgba(252, 252, 252, 0.6);
-  position: fixed;
-  padding: 1rem;
+  margin-top: 2rem;
+  padding: 0 1rem 1rem 1rem;
   color: rgb(33, 110, 162);
   max-width: 190px;
   font-weight: bolder;
+}
+
+.call h2 {
+  padding-top: 0;
 }
 
 .call ul li{
@@ -212,6 +216,78 @@ figcaption {
   text-align: center;
   padding: 1rem;
   max-width: fit-content;
+}
+
+/* Messages */
+.notice {
+  list-style: none;
+  padding: .5rem;
+  width: 100%;
+  background-color: rgba(135, 206, 235, .3);
+}
+
+.error {
+  list-style: none;
+  padding: .5rem;
+  width: 100%;
+  background-color: red;
+  color: white;
+  font-weight: bolder;
+}
+
+#messages {
+  grid-column: 2 / 3;
+  justify-content: right;
+}
+
+/* Account Pages */
+form {
+  justify-content: center;
+  justify-self: center;
+  display: block;
+  width: 90%;
+  margin: auto;
+  border: 2px solid var(--accent-color);
+  border-radius: 25px;
+}
+
+form p, form p {
+  text-align: center;
+}
+
+fieldset {
+  border: none;
+}
+
+input, button, select {
+  height: 44px;
+  display: block;
+  width: 90%;
+  margin-bottom: 2rem;
+  margin: auto, 1rem;
+}
+
+textarea {
+  height: 100px;
+  display: block;
+  width: 90%;
+  margin-bottom: 2rem;
+  margin: auto, 1rem;
+}
+
+input:required:invalid, input:focus:invalid {
+  border: 2px solid red;
+  background-color: rgba(255, 0, 0, .2);
+}
+
+input:required:valid {
+  border: 2px solid green;
+  background-color: rgba(0, 128, 0, .2);
+}
+
+form span p {
+  margin-top: none;
+  padding-top: none;
 }
 
 @media screen and (min-width: 600px) {

@@ -80,6 +80,18 @@ Util.buildDetails = async function(data){
   return details
 }
 
+/* ************************
+ * Constructs the options for classification for the new inventory form
+ ************************** */
+Util.getClass = async function (req, res, next) {
+  let data = await invModel.getClassifications()
+  let list = ""
+  data.rows.forEach((row) => {
+    list += `<option value="${row.classification_id}">${row.classification_name}</option>`
+  })
+  return list
+}
+
 /* *****************************
  *  Middleware For Handling Errors
  *  Wrap other function in this for 

@@ -1,6 +1,5 @@
-<!-- Inventory view -->
  <!-- Check for a a title. if no title, redirect -->
-<% if (title) { %>
+ <% if (title) { %>
     <h1><%= title%></h1>
     <% } else {
         res.redirect('/')
@@ -8,4 +7,5 @@
 
 <%- messages() %>
 
-<%- grid %>
+<a href="./inv/new/Class"><p>add new classification</p></a>
+<a href="./inv/new/Inv"><p>add new inventory</p></a>
