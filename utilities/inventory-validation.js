@@ -63,9 +63,7 @@ validate.inventoryRules = () => {
         body("inv_model")
             .escape()
             .notEmpty()
-            .withMessage("Model value is missing")
-            .matches(/^[a-zA-Z]+$/)
-            .withMessage("Only alphabetical characters allowed."),
+            .withMessage("Model value is missing"),
 
         // inv_year is required and contains exactly 4 numbers
         body("inv_year")

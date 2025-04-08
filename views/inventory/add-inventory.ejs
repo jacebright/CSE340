@@ -7,6 +7,13 @@
 
 <%- messages() %>
 
+<% if (errors) { %>
+    <ul class="message warning">
+    <% errors.array().forEach(error => { %>
+    <li><%= error.msg %></li>
+    <% }) %>
+    </ul>
+<% } %>
 
 <form id="inventoryForm" action="/inv/new/inv" method="post">
     <fieldset id="account">

@@ -7,6 +7,14 @@
 
 <%- messages() %>
 
+<% if (errors) { %>
+    <ul class="message warning">
+    <% errors.array().forEach(error => { %>
+    <li><%= error.msg %></li>
+    <% }) %>
+    </ul>
+<% } %>
+
 <form id="registerForm" action="/inv/new/class" method="post">
     <fieldset id="add-class">
         <label for="classification">Classification Name:</label>
