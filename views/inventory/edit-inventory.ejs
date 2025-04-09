@@ -15,11 +15,13 @@
     </ul>
 <% } %>
 
-<form id="inventoryForm" action="/inv/new/inv" method="post">
+
+
+<form id="editForm" action="/inv/edit" method="post">
     <fieldset id="account">
         <label for="classification_id">Classification:</label>
-        <select name="classification_id" id="classification_id" required value="<%= locals.classification_id %>">
-            <option value="Select" selected disabled>Choose a Classification</option>
+        <select name="classification_id" id="classification_id" required>
+            <!-- <option value="Select" selected disabled>Choose a Classification</option> -->
             <%- classifications %>
         </select> 
         <label for="inv_make">Make:</label>
@@ -36,10 +38,10 @@
         </textarea>
 
         <label for="inv_image">Image:</label>
-        <input type="text" name="inv_image" id="inv_image" required value="/images/vehicles/no-image.png">
+        <input type="text" name="inv_image" id="inv_image" required value="<%= locals.inv_image %>">
 
         <label for="inv_thumbnail">Thumbnail:</label>
-        <input type="text" name="inv_thumbnail" id="inv_thumbnail" required value="/images/vehicles/no-image.png">
+        <input type="text" name="inv_thumbnail" id="inv_thumbnail" required value="<%= locals.inv_thumbnail %>">
 
         <label for="inv_price">Price:</label>
         <input type="number" name="inv_price" id="inv_price" min="0" placeholder="decimal or integer" step=".01" required value="<%= locals.inv_price %>">
@@ -52,6 +54,13 @@
 
 
 
-        <button type="submit">Add Item to Inventory</button>
+        <button type="submit" disabled>Edit Item</button>
+
+    
+        <input type="hidden" name="inv_id" <% if(locals.inv_id) {%> value="<%= locals.inv_id %>" <% } %>>
+
     </fieldset>
 </form>
+
+<!-- connect the script to disable the edit button -->
+<script src="../../js/inv-edit.js"></script>

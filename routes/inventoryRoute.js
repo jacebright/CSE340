@@ -16,6 +16,14 @@ router.get("/detail/:invId", utilities.handleErrors(invController.buildByVehicle
 router.get("/", utilities.handleErrors(invController.buildManagement));
 router.get("/new/Class", utilities.handleErrors(invController.buildNewClass));
 router.get("/new/Inv", utilities.handleErrors(invController.buildNewInv));
+router.get("/getInventory/:classification_id", utilities.handleErrors(invController.getInventoryJSON))
+
+// edit inventory routes
+router.get("/edit/:inv_id", utilities.handleErrors(invController.buildEdit))
+router.post("/edit/",
+    invValidate.inventoryRules(),
+    invValidate.checkEditData,
+     utilities.handleErrors(invController.editInventory))
 
 // Post form data
 router.post('/new/Class',
