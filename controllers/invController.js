@@ -224,13 +224,55 @@ invCont.editInventory = async function (req, res, next) {
         )
         res.redirect("/inv/")
     } else {
-        req.flash("error", "Sorry, adding the new classification failed.")
-        res.status(501).render("inventory/add-inventory", {
+        req.flash("error", "Sorry, editing the vehicle failed.")
+        res.status(501).render("inventory/edit-inventory", {
             title: `Edit ${inv_make} ${inv_model}`,
             nav,
             classifications: await utilities.getClass(classification_id),
             inv_make, inv_model, inv_year, inv_description, inv_image, inv_thumbnail, inv_price, inv_miles, inv_color, classification_id, inv_id
         })
+    }
+}
+
+/* ****************************************
+ *  Build the delete confirmation page for an inventory item
+ * ************************************** */
+invCont.buildDelete = async function (req, res, next) {
+    const inv_id = req.params.inv_id
+    let nav = await utilities.getNav();
+    const itemData = await invModel.getVehicleByInventoryId(inv_id)
+    const itemName = `${itemData[0].inv_make} ${itemData[0].inv_model}`
+
+    res.render("./inventory/delete-confirm", {
+        title: "Delete " + itemName,
+        nav,
+        errors: null,
+        inv_id: itemData[0].inv_id,
+        inv_make: itemData[0].inv_make,
+        inv_model: itemData[0].inv_model,
+        inv_year: itemData[0].inv_year,
+        inv_price: itemData[0].inv_price
+    })
+}
+
+/* ******************************
+ *  Process Confirmed Delete
+ * **************************** */
+invCont.deleteInventory = async function (req, res, next) {
+    let nav = await utilities.getNav();
+    const inv_id = parseInt(req.body.inv_id)
+
+    const deleteResult = await invModel.deleteInventory(inv_id)
+
+    if (deleteResult) {
+        res.redirect("/inv/")
+        req.flash(
+            "notice",
+            `Inventory item has been deleted.`
+        )
+    } else {
+        req.flash("error", "Sorry, deleting the vehicle failed.")
+        res.status(501).redirect("/inv/")
     }
 }
 

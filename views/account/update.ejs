@@ -1,0 +1,46 @@
+<% if (title) { %>
+    <h1><%= title%></h1>
+    <% } else {
+        res.redirect('/')
+    } %>
+
+<%- messages() %>
+
+<% if(errors) { %>
+    <ul class="error">
+        <% errors.array().forEach(error => { %>
+            <li><%= error.msg %></li> 
+        <% }) %>
+    </ul><%} %>
+
+    <form id="updateUserForm" action="/account/update" method="post">
+        <fieldset id="update-user">
+            <label for="account_firstname">First Name:</label>
+            <input type="text" name="account_firstname" id="account_firstname" pattern="^[a-zA-Z]+$" value="<%= locals.accountData.account_firstname %>">
+
+            <label for="account_lastname">Last Name:</label>
+            <input type="text" name="account_lastname" id="account_lastname" pattern="^[a-zA-Z]+$" value="<%= locals.accountData.account_lastname %>">
+
+            <label for="account_email">Email Address:</label>
+            <input type="email" name="account_email" id="account_email" value="<%= locals.accountData.account_email %>">
+            
+            <!-- Excluding the old email from the existing email check -->
+            <input type="hidden" name="old_email" id="old_email" value="<%=locals.accountData.old_email %>">
+            <input type="hidden" name="account_id" <% if(locals.accountData.account_id) {%> value="<%= locals.accountData.account_id %>" <% } %>>
+            <button type="submit" id="updateButton" disabled>Update Information</button>
+        </fieldset>
+    </form>
+
+    <form id="updatePasswordForm" action="/account/update-pass" method="post">
+        <fieldset id="update-password">
+            <label for="account_password">Update Password:</label>
+            <input type="password" name="account_password" id="account_password" pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{12,}$">
+            <span><p><i>Passwords must be at least 12 characters and contain at least 1 number, capital letter, and 1 special character</i></p></span>
+            
+            <input type="hidden" name="account_id" <% if(locals.accountData.account_id) {%> value="<%= locals.accountData.account_id %>" <% } %>>
+            <button type="submit" id="passwordButton" disabled>Update Password</button>
+        </fieldset>
+    </form>
+
+<!-- connect the script to disable the edit button -->
+<script src="../../js/update.js"></script>

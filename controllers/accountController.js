@@ -95,6 +95,7 @@ async function accountLogin(req, res) {
     try {
         if (await bcrypt.compare(account_password, accountData.account_password)) {
             delete accountData.account_password
+            accountData.old_email = accountData.account_email
             const accessToken = jwt.sign(accountData, process.env.ACCESS_TOKEN_SECRET, { expiresIn: 3600 * 1000 })
             if (process.env.NODE_ENV === 'development') {
                 res.cookie("jwt", accessToken, { httpOnly: true, maxAge: 3600 * 1000})
@@ -129,4 +130,118 @@ async function buildAccount(req, res, next) {
     })
 }
 
-module.exports = { buildLogin, buildRegister, registerAccount, accountLogin, buildAccount }
+/* ******************************
+ *  Deliver Account view
+ * **************************** */
+async function buildAccountUpdate(req, res, next) {
+    let nav = await utilities.getNav()
+    res.render("account/update", {
+        title: "Update Account",
+        nav,
+        errors: null,
+    })
+}
+
+/* ******************************
+ *  Process Account Update
+ * **************************** */
+async function updateAccount(req, res) {
+    let nav = await utilities.getNav();
+    const { account_id, account_firstname, account_lastname, account_email } = req.body;
+
+    const regResult = await accountModel.updateAccount(
+        account_firstname,
+        account_lastname,
+        account_email,
+        account_id
+    )
+
+    if (regResult) {
+        // update the cookie!!!!!!!!!
+        const accountData = await accountModel.getAccountById(account_id)
+        delete accountData.account_password
+
+        const accessToken = jwt.sign(accountData, process.env.ACCESS_TOKEN_SECRET, { expiresIn: 3600 * 1000 })
+          if (process.env.NODE_ENV === 'development') {
+              res.cookie("jwt", accessToken, { httpOnly: true, maxAge: 3600 * 1000})
+          } else {
+              res.cookie("jwt", accessToken, {httpOnly: true, secure: true, maxAge: 3600 * 1000 })
+          }
+
+        req.flash(
+            "notice",
+            `Congratulations, you\'re information has been updated, ${account_firstname}.`
+        )
+        res.status(201).render("account/account", {
+            title:"Account",
+            nav,
+            errors: null,
+        })
+    } else {
+        req.flash("error", "Sorry, the update failed.")
+        res.status(501).render("account/update", {
+            title: "Update",
+            nav,
+            account_firstname,
+            account_lastname,
+            account_email
+        })
+    }
+}
+
+/* ******************************
+ *  Process password update
+ * **************************** */
+async function updatePassword(req, res) {
+    let nav = await utilities.getNav();
+    const { account_id, account_password} = req.body;
+
+    // Hash the password before storing
+    let hashedPassword
+    try {
+        // regular password and cost (salt is generated automatically)
+        hashedPassword = await bcrypt.hashSync(account_password, 10)
+    } catch (error) {
+        req.flash("error", 'Sorry, there was an error processing the update')
+        res.status(500).render("account/update", {
+            title: "Update",
+            nav,
+            errors: null,
+        })
+    }
+
+    const regResult = await accountModel.updatePassword(
+        hashedPassword,
+        account_id
+    )
+
+    if (regResult) {
+        req.flash(
+            "notice",
+            `Congratulations, you\'ve updated the password ${res.locals.accountData.account_firstname}.`
+        )
+        res.status(201).render("account/account", {
+            title:"Update",
+            nav,
+            errors: null,
+        })
+    } else {
+        req.flash("error", "Sorry, the update failed.")
+        res.status(501).render("account/update", {
+            title: "Update",
+            nav,
+        })
+    }
+}
+
+/* ******************************
+ *  Logout
+ * **************************** */
+async function logout(req, res) {
+    res.clearCookie("jwt")
+    delete res.locals.accountData;
+    res.locals.loggedin = 0;
+    req.flash("notice", "Logout successful.")
+    res.redirect("/")}
+
+module.exports = { buildLogin, buildRegister, registerAccount, accountLogin, buildAccount, updateAccount, updatePassword, buildAccountUpdate, logout }

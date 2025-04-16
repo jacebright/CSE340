@@ -131,6 +131,19 @@ Util.checkJWTToken = (req, res, next) => {
 }
 
 /* *****************************
+ *  Middleware to check if the user is authorized as an employee or admin
+ * **************************** */
+Util.checkIfAuthorized = (req, res, next) => {
+  if (res.locals.loggedin == "1" && (res.locals.accountData.account_type === "Employee" || res.locals.accountData.account_type === "Admin")) {
+    next()
+  } else {
+    
+    res.redirect("/account/login")
+    req.flash("notice", "You are not authorized to view this page")
+  }
+}
+
+/* *****************************
  *  Check Login
  * **************************** */
 Util.checkLogin = (req, res, next) => {
@@ -139,6 +152,19 @@ Util.checkLogin = (req, res, next) => {
   } else {
     req.flash("notice", "Please log in.")
     return res.redirect("/account/login")
+  }
+}
+
+/* *****************************
+ *  updateCookie
+ * **************************** */
+Util.updateCookie = (req, res, accountData) => {
+  console.log("cookie update began")
+  const accessToken = jwt.sign(accountData, process.env.ACCESS_TOKEN_SECRET, { expiresIn: 3600 * 1000 })
+  if (process.env.NODE_ENV === 'development') {
+      res.cookie("jwt", accessToken, { httpOnly: true, maxAge: 3600 * 1000})
+  } else {
+      res.cookie("jwt", accessToken, {httpOnly: true, secure: true, maxAge: 3600 * 1000 })
   }
 }
 

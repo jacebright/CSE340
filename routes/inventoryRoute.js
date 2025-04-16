@@ -13,10 +13,10 @@ router.get("/type/:classificationId", utilities.handleErrors(invController.build
 router.get("/detail/:invId", utilities.handleErrors(invController.buildByVehicleId));
 
 // Route to build the management views
-router.get("/", utilities.handleErrors(invController.buildManagement));
-router.get("/new/Class", utilities.handleErrors(invController.buildNewClass));
-router.get("/new/Inv", utilities.handleErrors(invController.buildNewInv));
-router.get("/getInventory/:classification_id", utilities.handleErrors(invController.getInventoryJSON))
+router.get("/", utilities.checkJWTToken, utilities.checkIfAuthorized, utilities.handleErrors(invController.buildManagement));
+router.get("/new/Class", utilities.checkJWTToken, utilities.checkIfAuthorized, utilities.handleErrors(invController.buildNewClass));
+router.get("/new/Inv", utilities.checkJWTToken, utilities.checkIfAuthorized, utilities.handleErrors(invController.buildNewInv));
+router.get("/getInventory/:classification_id", utilities.handleErrors(invController.getInventoryJSON));
 
 // edit inventory routes
 router.get("/edit/:inv_id", utilities.handleErrors(invController.buildEdit))
@@ -24,6 +24,11 @@ router.post("/edit/",
     invValidate.inventoryRules(),
     invValidate.checkEditData,
      utilities.handleErrors(invController.editInventory))
+
+
+// Delete inventory routes
+router.get("/delete/:inv_id", utilities.handleErrors(invController.buildDelete))
+router.post("/delete/", utilities.handleErrors(invController.deleteInventory))
 
 // Post form data
 router.post('/new/Class',

@@ -30,4 +30,22 @@ router.post(
 
 router.get("/", utilities.checkLogin, utilities.handleErrors(accntController.buildAccount));
 
+// Build the account management page
+router.get("/update/:account_id", utilities.checkLogin, utilities.handleErrors(accntController.buildAccountUpdate));
+
+// Process the update requests
+// For the Password Update
+router.post('/update-pass',
+    regValidate.updatePasswordRules(),
+    regValidate.checkUpdatePassData,
+    utilities.handleErrors(accntController.updatePassword))
+
+// For the account update
+router.post('/update',
+    regValidate.updateAccountRules(),
+    regValidate.checkUpdateAccntData,
+    utilities.handleErrors(accntController.updateAccount))
+
+router.get('/logout', utilities.handleErrors(accntController.logout))
+
 module.exports = router;
