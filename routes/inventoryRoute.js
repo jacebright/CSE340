@@ -11,6 +11,12 @@ router.get("/type/:classificationId", utilities.handleErrors(invController.build
 
 // Route to build vehicle by inv_id view
 router.get("/detail/:invId", utilities.handleErrors(invController.buildByVehicleId));
+// Route to add a comment posted by the user
+router.post("/detail/",
+    utilities.checkLogin,
+    invValidate.commentRules(),
+    invValidate.checkCommentData,
+    utilities.handleErrors(invController.submitComment));
 
 // Route to build the management views
 router.get("/", utilities.checkJWTToken, utilities.checkIfAuthorized, utilities.handleErrors(invController.buildManagement));

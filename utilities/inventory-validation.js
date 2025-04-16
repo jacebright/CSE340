@@ -177,5 +177,34 @@ validate.checkEditData = async (req, res, next) => {
     next()
 }
 
+/* ********************************
+ *  Validation rules for Adding a comment
+ * ****************************** */
+validate.commentRules = () => {
+    return [
+        // comment_inv is required
+        body("comment_inv")
+            .escape()
+            .notEmpty()
+            .isLength({min: 1})
+            .withMessage("Comment is missing."),
+    ]
+}
+
+/* ********************************
+ * Check data and return errors or continue to add comment
+ * ****************************** */
+validate.checkCommentData = async (req, res, next) => {
+    const { comment_inv, inv_id } = req.body
+    let errors = []
+    errors = validationResult(req)
+    if (!errors.isEmpty()) {
+        req.flash
+        res.redirect(`/inv/detail/${inv_id}`)
+        return
+    }
+    next()
+}
+
 
 module.exports = validate

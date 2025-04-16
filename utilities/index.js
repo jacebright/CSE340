@@ -65,7 +65,7 @@ Util.buildClassificationGrid = async function(data){
 Util.buildDetails = async function(data){
   let details
   if(data.length > 0){
-    details = '<section class="detailPage"><div class="showroom"><img src="'
+    details = '<div class="detailPage"><div class="showroom"><img src="'
     +data[0].inv_image+'" alt="'+data[0].inv_year 
     + ' ' + data[0].inv_make + ' ' + data[0].inv_model+'"></div>'
     details+= '<div class="carDetails">'
@@ -80,6 +80,24 @@ Util.buildDetails = async function(data){
       details += '<p class="notice">Sorry, no matching vehicles could be found.</p>'
   }
   return details
+}
+
+/* *************************
+ *  Build the comments view for the detail page
+ * ************************ */
+Util.buildComments = async function(data){
+  let comments
+  if(data.length > 0){
+    comments = '<div class="comment_section"><h3>Comments</h3>'
+    data.forEach(comment => {
+      comments += '<div class="comment">'
+      comments += `<p>${comment.comment_inv}</p></div>`
+    });
+    comments += '</div>'
+  } else {
+      comments
+  }
+  return comments
 }
 
 /* ************************
@@ -147,7 +165,7 @@ Util.checkIfAuthorized = (req, res, next) => {
  *  Check Login
  * **************************** */
 Util.checkLogin = (req, res, next) => {
-  if (res.locals.loggedin) {
+  if (res.locals.loggedin){
     next()
   } else {
     req.flash("notice", "Please log in.")

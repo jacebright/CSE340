@@ -33,14 +33,41 @@ invCont.buildByVehicleId = async function (req, res, next) {
     const inv_id = req.params.invId
     const data = await invModel.getVehicleByInventoryId(inv_id)
     const detail = await utilities.buildDetails(data)
+    const comment_data = await invModel.getCommentsByInventoryId(inv_id)
+    const comments = await utilities.buildComments(comment_data)
     let nav = await utilities.getNav()
     const vechicleName = data[0].inv_year + " " + data[0].inv_make + " " + data[0].inv_model
     res.render("./inventory/detail", {
         title: vechicleName,
         nav,
         detail,
+        inv_id,
+        comments,
         errors: null
     })
+}
+
+/* ******************************
+ *  Process New Comment
+ * **************************** */
+invCont.submitComment = async function (req, res) {
+    const { comment_inv, inv_id } = req.body;
+
+    const commResult = await invModel.addNewComment(
+        comment_inv,
+        inv_id
+    )
+
+    if (commResult) {
+        req.flash(
+            "notice",
+            `Congratulations, you\'ve added a comment.`
+        )
+        res.status(201).redirect(`/inv/detail/${inv_id}`)
+    } else {
+        req.flash("error", "Sorry, adding the new comment failed.")
+        res.status(201).redirect(`/inv/detail/${inv_id}`)
+    }
 }
 
 /* ****************************************

@@ -218,6 +218,24 @@ figcaption {
   max-width: fit-content;
 }
 
+#commentForm {
+  margin: 1rem;
+}
+
+.comment_section {
+  border: 2px solid var(--accent-color);
+  margin: .5rem auto;
+  padding: 1rem;
+  text-align: center;
+}
+
+.comment {
+  border: 1px dashed var(--accent-color);
+  margin: .5rem auto;
+  text-align: center;
+  padding: 1rem;
+}
+
 /* Messages */
 .notice {
   list-style: none;
@@ -355,5 +373,13 @@ a {
 
 .carDetails {
   grid-column: 2 / 3;
+}
+
+#commentForm {
+  grid-row: 4 / 5;
+}
+
+.comment_section {
+  grid-row: 3 / 4;
 }
 }

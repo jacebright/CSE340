@@ -65,7 +65,6 @@ async function getAccountById (account_id) {
 async function updateAccount(account_firstname, account_lastname, account_email, account_id){
     try {
         const sql = 'UPDATE public.account SET account_firstname = $1, account_lastname = $2, account_email = $3 WHERE account_id = $4 RETURNING *';
-        console.log("The query really worked?")
         return await pool.query(sql, [account_firstname, account_lastname, account_email, account_id]);
     } catch (error) {
         return error.message;

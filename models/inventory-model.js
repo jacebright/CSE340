@@ -40,6 +40,25 @@ async function getVehicleByInventoryId(inv_id) {
     }
 }
 
+/* *****************************
+ *  Get vehicles comments by inv_id
+ * **************************** */
+async function getCommentsByInventoryId(inv_id) {
+    try{
+        const data = await pool.query(
+            `SELECT comment_inv FROM public.comments AS c WHERE c.inv_id = $1`,
+            [inv_id]
+        )
+        if (data.rows != null){
+        return data.rows
+        } else {
+            return
+        }
+    } catch (error) {
+        console.error("getVehicleByInventoryId error " + error)
+    }
+}
+
 /* **********************************
 * Add new classification
  * ******************************** */
@@ -90,4 +109,16 @@ async function deleteInventory(inv_id){
     }
 }
 
-module.exports = {getClassifications, getInventoryByClassificationId, getVehicleByInventoryId, addNewClassification, addNewInventory, editInventory, deleteInventory }
+/* **********************************
+* Add new comment
+ * ******************************** */
+async function addNewComment(comment_inv, inv_id){
+    try {
+        const sql = "INSERT INTO comments (comment_inv, inv_id) VALUES ($1, $2) RETURNING *";
+        return await pool.query(sql, [comment_inv, inv_id]);
+    } catch (error) {
+        return error.message;
+    }
+}
+
+module.exports = {getClassifications, getInventoryByClassificationId, getVehicleByInventoryId, addNewClassification, addNewInventory, editInventory, deleteInventory, getCommentsByInventoryId, addNewComment }

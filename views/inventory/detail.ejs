@@ -6,6 +6,24 @@
         res.redirect('/')
     } %>
 
-<%# messages() %>
+<% messages() %>
+
+<% if(errors) { %>
+    <ul class="error">
+        <% errors.array().forEach(error => { %>
+            <li><%= error.msg %></li> 
+        <% }) %>
+    </ul><%} %>
 
 <%- detail %>
+
+<%- comments %>
+
+<form id="commentForm" action="/inv/detail/" method="post">
+    <fieldset id="add-comment">
+        <label for="comment_inv">Comment:</label>
+        <input type="textarea" name="comment_inv" id="comment_inv" required>
+        <input type="hidden" name="inv_id" id="inv_id" value="<%= inv_id %>">
+        <button type="submit">Submit Comment</button>
+    </fieldset>
+</form>
